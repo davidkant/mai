@@ -32,11 +32,12 @@ class FSTN:
         # walk until land on state 0
         while curr_state != 0:
             # possible choices for next state
-            choices = [(y,label) for x,y,label in self.edges if x==curr_state]
+            choices = [(y, label) for x,y,label in self.edges if x==curr_state]
             # choose a next state
             next_state, next_label = random.choice(choices) if choices != [] else curr_state
             # add transition label to the walk
-            walk += [next_label]
+            if next_label != []:
+                walk += [next_label]
             # update current state
             curr_state = next_state
 
