@@ -71,7 +71,7 @@ class FM1():
         return self.osc2.next() * self.adsr.next()
 
     def render(self):
-        dur = int(self.sr * (self.attack + self.release))
+        dur = int(self.sr * self.attack) + int(self.sr * self.release)
         return np.array([self.next() for i in range(dur)])
 
 def test_FM1():
