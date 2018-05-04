@@ -53,13 +53,14 @@ class ADSR():
 class FM1():
     """A FM synth with a few control parameters."""
 
-    def __init__(self, carrier=900, modulator=300, index1=5, index2=0, attack=1, release=1):
+    def __init__(self, carrier=900, modulator=300, index1=5, index2=0, attack=1, release=1, sr=44100):
         self.carrier = carrier
         self.modulator =  modulator
         self.index1 = index1
         self.index2 = index2
         self.attack = attack
         self.release = release
+        self.sr = sr
         self.osc1 = SinOsc(self.modulator)
         self.osc2 = SinOsc(self.carrier)
         self.index = Ramp(index1, index2, self.attack+self.release)
@@ -68,6 +69,10 @@ class FM1():
     def next(self):
         self.osc2.freq = self.osc1.next() * float(self.index.next()) * float(self.modulator) + float(self.carrier)
         return self.osc2.next() * self.adsr.next()
+
+    def render(self):
+        dur = int(self.sr * (self.attack + self.release))
+        return np.array([self.next() for i in range(dur)])
 
 def test_FM1():
     carrier = 900
@@ -79,3 +84,14 @@ def test_FM1():
     sr = 44100
     fm = FM1(carrier, modulator, index1, index2, attack, release)
     return np.array([fm.next() for i in range(int(44100*(attack+release)))])
+
+def test_FM1_render():
+    carrier = 900
+    modulator = 300
+    index1 = 10
+    index2 = 0
+    attack = 1
+    release = 0
+    sr = 44100
+    fm = FM1(carrier, modulator, index1, index2, attack, release)
+    return fm.render()
