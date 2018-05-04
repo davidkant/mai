@@ -114,7 +114,7 @@ class GeneticAlgorithm:
 
         return self.population
 
-    def evolve_once(self):
+    def evolve_once(self, mutation_prob=0.01):
         """Evolve one generation using fitness scores in self.fitness."""
 
         # construct mating pool of probabilities weighted by fitness score
