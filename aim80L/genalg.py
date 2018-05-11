@@ -47,11 +47,18 @@ def reproduce(parent1, parent2):
 def mutate(genotype, mutation_prob=0.01, inbreeding_prob=0.5):
     """Mutate!"""
 
+    # do we mutate?
     if random.random() <= mutation_prob:
-        print('-> muuuuutating individual {0}'.format(genotype))
-        gene_index = random.randrange(len(genotype))
-        genotype[gene_index] = random.random()
         
+        # print it
+        print('-> muuuuutating individual {0}'.format(genotype))
+
+        # select a random chromosome
+        gene_index = random.randrange(len(genotype))
+
+        # flip its value
+        genotype[gene_index] = 1 - genotype[gene_index]
+
     return genotype
 
 # genetic algorithm  ---------------------------------------------------------------------
@@ -61,12 +68,13 @@ class GeneticAlgorithm:
 
     def __init__(self):
 
-        # initialize defaul functions
+        # initialize default functions
         self.random_individual = random_individual
         self.to_phenotype = to_phenotype
         self.fitness_func = fitness_func
         self.to_weight = to_weight
         self.reproduce = reproduce
+        self.mutate = mutate
 
     def initialize_population(self, population_size=10):
         """Initialize the population."""
