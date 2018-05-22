@@ -1,5 +1,25 @@
 import math
 
+# interpolation ---------------------------------------------------------------
+
+def linear_map(self, val, lo, hi):
+    """Linear mapping."""
+    return val * (hi - lo) + lo
+
+def linear_unmap(self, val, lo, hi):
+    """Linear unmapping."""
+    return (val - lo) / (hi - lo)
+
+def exp_map(self, val, lo, hi):
+    """Exponential mapping."""
+    return pow(hi / lo, val) * lo
+
+def exp_unmap(self, val, lo, hi):
+    """Exponential unmapping."""
+    return math.log(val / lo) / math.log(hi / lo)
+
+# spec ------------------------------------------------------------------------
+
 class ControlSpec: 
     """A very basic SC-style control spec."""
 
