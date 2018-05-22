@@ -1,7 +1,8 @@
 import numpy as np
+import musifuncs as mf
 
 class SinOsc():
-    """A simple sin oscillator."""
+    """A simple sine wave oscillator."""
 
     def __init__(self, freq=440, iphase=0, sr=44100):
         self.TWO_PI = np.pi * 2
@@ -72,7 +73,7 @@ class FM1():
 
     def render(self):
         dur = int(self.sr * self.attack) + int(self.sr * self.release)
-        return np.array([self.next() for i in range(dur)])
+        return np.array([self.next() for i in range(dur-1)])
 
 def test_FM1():
     carrier = 900
