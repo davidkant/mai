@@ -13,9 +13,9 @@ requirements = [
 ]
 
 setup(
-    name='aim80L',
+    name='mai',
     version='0.0.1',
-    description='Music 80L Artificial Intelligence and Music',
+    description='Music and Artificial Intelligence',
     long_description=readme,
     author='David Kant',
     author_email='dkant@ucsc.edu',
