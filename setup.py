@@ -7,7 +7,9 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 requirements = [
-    'numpy'
+    'numpy',
+    'pretty_midi',
+    'pyfluidsynth',
 ]
 
 setup(
