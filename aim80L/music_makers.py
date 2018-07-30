@@ -1,8 +1,8 @@
 import pretty_midi
-import Ipython.display
+import IPython.display
 
 def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000):
-	"""Turn lists of numbers into music.
+    """Turn lists of numbers into music.
 
     Converts pitch and duration values into MIDI and/or audio playback. Uses
     `pretty_midi` for MIDI representation handling, fluidsynth for resynthesis, 
@@ -24,16 +24,15 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', 
         - `'audio'` returns waveforms as a `numpy` nd.array  
         - `'inbrowser'` returns `IPython.display.Audio` widget 
         - `'autoplay'` returns `IPython.display.Audio` widget and plays it
-    
+
     Returns
     -------
     synthesized: depends on the value of `format`.
-    
+
     Notes
     -----
     If len(pitches) and len(durs) do not match, the smaller list is extended to 
     match the length of the longer list by repeating the last value.
-    
     """
 
     # check and convert to list if needed
