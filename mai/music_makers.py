@@ -1,5 +1,6 @@
 import pretty_midi
 import IPython.display
+import math
 
 def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000):
     """Turn lists of numbers into music.
@@ -11,7 +12,8 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', 
     Parameters
     ----------
     pitches : list or scalar
-        List of pitches, or scalar if constant pitch. 
+        List of pitches, or scalar if constant pitch. Floating point values are
+        interpreted as microtonal pitch deviations.
     durs: list or scalar
         List of durations, or scalar if constant duration. 
     pgm: number
@@ -54,11 +56,24 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', 
     now_time = 0
     for pitch,dur in zip(pitches, durs):
 
+        # split into 12tet and microtones
+        micros, pitch = math.modf(pitch)
+
         # create a new note
-        note = pretty_midi.Note(velocity=100, pitch=pitch, start=now_time, end=now_time+dur)
+        note = pretty_midi.Note(velocity=100, pitch=int(pitch), start=now_time, end=now_time+dur)
 
         # and add it to the instrument
         ins.notes.append(note)
+
+        # if microtonal
+        if micros != 0:
+                                  
+            # create a new pitch bend
+            # note: 4096 is a semitone in standard MIDI +/-2 pitchbend range
+            micropitch = pretty_midi.PitchBend(pitch=int(round(micros*4096)), time=now_time)
+
+            # and add it to the instrument
+            ins.pitch_bends.append(micropitch)
 
         # advance time
         now_time += dur
