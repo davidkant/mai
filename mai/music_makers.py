@@ -1,6 +1,8 @@
 import pretty_midi
 import IPython.display
 import math
+import matplotlib.pyplot as plt
+
 
 def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000):
     """Turn lists of numbers into music.
@@ -92,3 +94,26 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', 
         return IPython.display.Audio(score.fluidsynth(fs=sr), rate=sr, autoplay=True)
     else:
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
+
+def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000, figsize=(9,3), cmap='jet'):
+    """Plot lists of numbers as music (same API as `make_music`)"""
+
+    # check and convert to list if needed
+    pitches = pitches if isinstance(pitches, list) else [pitches]
+    durs = durs if isinstance(durs, list) else [durs]
+  
+    # extend short lists if size mismatch
+    max_length = max(len(pitches), len(durs))
+    pitches += [pitches[-1]] * (max_length - len(pitches))
+    durs += [durs[-1]] * (max_length - len(durs))
+
+    # plot
+    plt.figure(figsize=figsize)
+    curr_time = 0
+    cm = plt.cm.get_cmap(name=cmap)
+    for pitch,dur in zip(pitches, durs):
+        pitch_normed = (pitch - min(pitches)) / (max(pitches) - min(pitches))
+        plt.scatter([curr_time], [pitch], marker='|', c='white', s=25, zorder=3)
+        plt.plot([curr_time, curr_time + dur], [pitch, pitch], lw=5, solid_capstyle='butt', c=cm, alpha=0.75)
+        curr_time += dur
+    plt.show()
