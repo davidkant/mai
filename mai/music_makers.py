@@ -95,7 +95,7 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', 
     else:
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
 
-def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000, figsize=(9,3), cmap='viridis'):
+def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000, figsize=(9,3), cmap='jet', show=True):
     """Plot lists of numbers as music (same API as `make_music`)"""
 
     # check and convert to list if needed
@@ -109,11 +109,13 @@ def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autopl
 
     # plot
     plt.figure(figsize=figsize)
-    curr_time = 0
     cm = plt.cm.get_cmap(name=cmap)
+    curr_time = 0
     for pitch,dur in zip(pitches, durs):
         pitch_normed = float(pitch - min(pitches)) / (max(pitches) - min(pitches)) if (max(pitches) - min(pitches)) != 0 else 1
         plt.scatter([curr_time], [pitch], marker='|', c='white', s=25, zorder=3)
         plt.plot([curr_time, curr_time + dur], [pitch, pitch], lw=5, solid_capstyle='butt', c=cm(pitch_normed), alpha=0.75)
         curr_time += dur
-    plt.show()
+
+    if show:
+        plt.show()
