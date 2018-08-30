@@ -9,9 +9,9 @@ def spectrogram(y, **kwargs):
 def spectral_features(filename, frameSize=2048, hopSize=1024, sr=44100):
     """Extract basic spectral features."""
 
-    # if y is audio write a temp file for essentia to load
+    # if filename is audio write a temp file for essentia to load
     if isinstance(filename, np.ndarray):
-      librosa.output.write_wav('tempaudio.wav', y, sr=sr, norm=False)
+      librosa.output.write_wav('tempaudio.wav', filename, sr=sr, norm=False)
       filename = 'tempaudio.wav'
 
     # features to return
