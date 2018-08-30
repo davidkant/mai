@@ -2,6 +2,10 @@ import librosa
 import essentia
 import numpy as np
 
+def spectrogram(y, **kwargs):
+    """Compute db-scale magnitude spectrum."""
+    return librosa.amplitude_to_db(np.abs(librosa.stft(y, **kwargs)), ref=np.max)
+
 def spectral_features(filename, frameSize=2048, hopSize=1024, sr=44100):
     """Extract basic spectral features."""
 
