@@ -10,6 +10,8 @@ requirements = [
     'numpy',
     'pretty_midi',
     'pyfluidsynth',
+    'librosa',
+    'essentia'
 ]
 
 setup(
