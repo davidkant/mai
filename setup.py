@@ -11,7 +11,8 @@ requirements = [
     'pretty_midi',
     'pyfluidsynth',
     'librosa',
-    'essentia'
+    'essentia',
+    'keras',
 ]
 
 setup(

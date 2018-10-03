@@ -6,6 +6,7 @@ import genalg
 import musifuncs
 import music_makers
 import listen
+import nn
 
 from music_makers import make_music
 from music_makers import make_music_plot
