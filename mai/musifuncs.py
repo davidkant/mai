@@ -1,5 +1,29 @@
 import math
 
+# converters ------------------------------------------------------------------
+
+def ratio_to_cents(r): 
+    """Pitch ratio to cents."""
+    return 1200.0 * np.log2(r)
+
+def cents_to_ratio(c): 
+    """Cents to pitch ratio."""
+    return np.power(2, c/1200.0)
+
+def hz_to_midi(f): 
+    """Frequency in Hz to midi note number."""
+    return 69.0 + 12.0 * np.log2(f/440.0)
+
+def midi_to_hz(m): 
+    """Midi note number to frequency."""
+    return np.power(2, (m-69.0)/12.0) * 440.0 if m!= 0.0 else 0.0
+
+def midi_to_cents(m):
+    """Split 12tet and cents."""  
+    p = np.round(m)
+    c = (m - p)* 100
+    return p,c
+   
 # interpolation ---------------------------------------------------------------
 
 def linear_map(val, lo, hi):
