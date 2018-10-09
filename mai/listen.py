@@ -23,7 +23,7 @@ def ypitch(y, frame_length, hop_length):
 
     return pitches, confidences
 
-def spectral_features(filename, frameSize=2048, hopSize=1024, sr=44100):
+def spectral_features(filename, frame_length=2048, hop_length=1024, sr=44100):
     """Extract basic spectral features."""
 
     # if filename is audio write a temp file for essentia to load
@@ -59,8 +59,8 @@ def spectral_features(filename, frameSize=2048, hopSize=1024, sr=44100):
         rhythmStats=['mean', 'stdev'],
         tonalStats=['mean', 'stdev'],
         analysisSampleRate=sr,
-        lowlevelFrameSize=frameSize,
-        lowlevelHopSize=hopSize
+        lowlevelFrameSize=frame_length,
+        lowlevelHopSize=hop_length
     )
 
     # extract features
