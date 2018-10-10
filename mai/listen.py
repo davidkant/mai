@@ -1,6 +1,7 @@
 import librosa
 import essentia
 import numpy as np
+from pyfid import ppitch
 
 def spectrogram(y, **kwargs):
     """Compute db-scale magnitude spectrum."""
