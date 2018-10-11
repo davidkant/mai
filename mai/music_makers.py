@@ -4,7 +4,7 @@ import math
 import matplotlib.pyplot as plt
 
 
-def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000):
+def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser', sr=16000):
     """Turn lists of numbers into music.
 
     Converts pitch and duration values into MIDI and/or audio playback. Uses
