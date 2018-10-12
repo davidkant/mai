@@ -2,7 +2,7 @@ import librosa
 import os 
 
 
-def play_audio(x, mp3=True, sr=22050):
+def play_mp3(x, mp3=True, sr=22050):
     """Write audio to mp3 and return Ipython widget."""
     # write temp wav file
     librosa.output.write_wav('temp.wav', x, sr=sr)
