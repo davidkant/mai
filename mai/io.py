@@ -7,7 +7,7 @@ def play_audio(x, mp3=True, sr=22050):
     # write temp wav file
     librosa.output.write_wav('temp.wav', x, sr=sr)
     # convert to mp3 using lame
-    !lame temp.wav temp.mp3 --quiet
+    os.system("lame temp.wav temp.mp3 --quiet")
     # return ipython audio widget
     return IPython.display.Audio('temp.mp3')
 
