@@ -1,5 +1,6 @@
 import librosa
 import os 
+import IPython.display
 
 
 def play_mp3(x, mp3=True, sr=22050):
