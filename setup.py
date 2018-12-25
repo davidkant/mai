@@ -8,6 +8,7 @@ with open('LICENSE.md') as f:
 
 requirements = [
     'numpy',
+    'matplotlib',
     'pretty_midi',
     'pyfluidsynth',
     'librosa',
