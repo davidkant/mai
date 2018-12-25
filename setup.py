@@ -10,7 +10,7 @@ requirements = [
     'numpy',
     'matplotlib',
     'pretty_midi',
-    'pyfluidsynth',
+    'pyFluidSynth >= 1.2.5',
     'librosa',
     'essentia',
     'keras',
