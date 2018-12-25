@@ -14,6 +14,7 @@ requirements = [
     'librosa',
     'essentia',
     'keras',
+    'tensorflow',
     'rise',
 ]
 
