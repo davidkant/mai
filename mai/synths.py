@@ -1,5 +1,5 @@
 import numpy as np
-import musifuncs as mf
+from . import musifuncs as mf
 
 class SinOsc():
     """A simple sine wave oscillator."""
