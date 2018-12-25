@@ -93,5 +93,5 @@ def test_RTN():
 
     # run FSTN
     walk = g.walk()
-    print walk
-    print pretty_print(walk)
+    print(walk)
+    print(pretty_print(walk))
