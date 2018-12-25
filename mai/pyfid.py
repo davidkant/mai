@@ -3,7 +3,7 @@
 import librosa
 import numpy as np
 import math
-from scipy import signal
+# from scipy import signal
 
 # --------------------------------------------------------------------------- #
 # utilities
