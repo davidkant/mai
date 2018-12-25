@@ -1,13 +1,13 @@
-import markov
-import fstn
-import rtn
-import synths
-import genalg
-import musifuncs
-import music_makers
-import listen
-import nn
-import io
+from . import markov
+from . import fstn
+from . import rtn
+from . import synths
+from . import genalg
+from . import musifuncs
+from . import music_makers
+from . import listen
+from . import nn
+from . import io
 
 from music_makers import make_music
 from music_makers import make_music_plot
