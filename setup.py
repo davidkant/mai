@@ -16,6 +16,9 @@ requirements = [
     'keras',
     'tensorflow',
     'rise',
+    'abjad',
+    'abjad_ext_ipython',
+    'abjad_ext_nauert',
 ]
 
 setup(
