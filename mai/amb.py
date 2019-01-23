@@ -12,7 +12,7 @@ def amb(pitch_center=40, pitch_range=6, pulse=120, rhythm=0.0, detune=0.0, repea
     while len(my_durs) < length:
 
         # do we look back?
-        if random.random() < repeat and len(my_pitches) >= memory:
+        if random.random() <= repeat and len(my_pitches) >= memory:
 
             # use the fifth previous note
             new_pitch = my_pitches[-memory]
