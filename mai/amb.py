@@ -16,7 +16,7 @@ def amb(pitch_center=40, pitch_range=6, pulse=120, rhythm=0.0, detune=0.0, repea
 
             # use the fifth previous note
             new_pitch = my_pitches[-memory]
-            new_duration = my_durs[-memory]
+            new_dur = my_durs[-memory]
 
         # if we don't look back
         else:
