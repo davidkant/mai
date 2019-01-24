@@ -58,24 +58,27 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     now_time = 0
     for pitch,dur in zip(pitches, durs):
 
-        # split into 12tet and microtones
-        micros, pitch = math.modf(pitch)
+        # if pitch value otherwise rest
+        if pitch is not None:
 
-        # create a new note
-        note = pretty_midi.Note(velocity=100, pitch=int(pitch), start=now_time, end=now_time+dur)
+            # split into 12tet and microtones
+            micros, pitch = math.modf(pitch)
 
-        # and add it to the instrument
-        ins.notes.append(note)
-
-        # if microtonal
-        if micros != 0:
-                                  
-            # create a new pitch bend
-            # note: 4096 is a semitone in standard MIDI +/-2 pitchbend range
-            micropitch = pretty_midi.PitchBend(pitch=int(round(micros*4096)), time=now_time)
+            # create a new note
+            note = pretty_midi.Note(velocity=100, pitch=int(pitch), start=now_time, end=now_time+dur)
 
             # and add it to the instrument
-            ins.pitch_bends.append(micropitch)
+            ins.notes.append(note)
+
+            # if microtonal
+            if micros != 0:
+                                      
+                # create a new pitch bend
+                # note: 4096 is a semitone in standard MIDI +/-2 pitchbend range
+                micropitch = pretty_midi.PitchBend(pitch=int(round(micros*4096)), time=now_time)
+
+                # and add it to the instrument
+                ins.pitch_bends.append(micropitch)
 
         # advance time
         now_time += dur
