@@ -4,6 +4,51 @@ import math
 import matplotlib.pyplot as plt
 
 
+def make_music_heterophonic(pitches=60, durs=0.25, pgm=1, is_drum=False, format='inbrowser', sr=16000):
+    """Turn a list of a list of numbers into music."""
+
+    # check and convert to list if needed
+    pitches = pitches if isinstance(pitches, list) else [pitches]
+    durs = durs if isinstance(durs, list) else [durs]
+    pgm = pgm if isinstance(pgm, list) else [pgm]
+    is_drum = is_drum if isinstance(is_drum, list) else [is_drum]
+
+    # extend short lists if size mismatch (in number of voices)
+    num_voices = max(len(pitches), len(durs), len(pgm), len(is_drum))
+    pitches += [pitches[-1]] * (num_voices - len(pitches))
+    durs += [durs[-1]] * (num_voices - len(durs))
+    pgm += [pgm[-1]] * (num_voices - len(pgm))
+    is_drum += [is_drum[-1]] * (num_voices - len(is_drum))
+
+    # make music for each and collect into list of instruments
+    ins = [make_music(pitches=p, durs=d, pgm=i, is_drum=x, format='MIDI').instruments[0]
+           for p,d,i,x in zip(pitches, durs, pgm, is_drum)]
+
+    # create a PrettyMIDI score
+    score = pretty_midi.PrettyMIDI()
+
+    # add all instruments
+    score.instruments.extend(ins)
+
+    # which format to render
+    if format=='MIDI':
+        return score 
+    elif format=='audio':
+        return score.fluidsynth(fs=16000) 
+    elif format=='inbrowser':
+        return IPython.display.Audio(score.fluidsynth(fs=sr), rate=sr)
+    elif format=='autoplay':
+        return IPython.display.Audio(score.fluidsynth(fs=sr), rate=sr, autoplay=True)
+    else:
+        raise ValueError("So sorry but your `format` argument did not match one of the available options")
+
+def test_make_music_heterophonic():
+    v1 = [60 + 2 * x for x in range(8)]
+    v2 = [x + 4 for x in v1]
+    v3 = [x - 4 for x in v1]
+    return make_music_heterophonic(pitches=[v1, v2, v3], durs=0.25, pgm=[1,13,24], format='MIDI')
+
+
 def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser', sr=16000):
     """Turn lists of numbers into music.
 

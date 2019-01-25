@@ -13,6 +13,7 @@ from . import amb
 
 from . music_makers import make_music
 from . music_makers import make_music_plot
+from . music_makers import make_music_heterophonic
 from . notation import make_music_notation
 from . io import write_mp3
 from . io import play_mp3
