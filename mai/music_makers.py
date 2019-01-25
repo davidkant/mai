@@ -97,7 +97,7 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     score = pretty_midi.PrettyMIDI()
 
     # create an instrument
-    ins = pretty_midi.Instrument(program=pgm-1, is_drum=is_drum)
+    ins = pretty_midi.Instrument(program=max(pgm-1, 0), is_drum=is_drum)
 
     # iterate through music
     now_time = 0
