@@ -1,4 +1,5 @@
 import random
+import functools
 
 class Markov:
     """A very simple markov model"""
@@ -54,7 +55,7 @@ class Markov:
             else: alpha = self.transitions 
 
         # weighed choose
-        choice = random.choice(reduce(lambda x,y: x+y, [[k]*v for k,v in alpha.items()]))
+        choice = random.choice(functools.reduce(lambda x,y: x+y, [[k]*v for k,v in alpha.items()]))
 
         # update state
         self.state = tuple(list(self.state)[1:] + [choice[1]])
