@@ -27,7 +27,7 @@ class Markov:
             key = (prev_state, curr_state)
 
             # if key in transitions
-            if self.transitions.has_key(key):
+            if key in self.transitions:
 
                 # increment count by 1
                 self.transitions[key] += 1
