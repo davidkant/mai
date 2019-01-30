@@ -12,7 +12,7 @@ class Markov:
         # initialize current state
         self.state = ()
 
-    def train(self, data, order=3):
+    def train(self, data, order=3, init_state=True):
         """Train the Markov model"""
 
         # loop through data
@@ -38,6 +38,10 @@ class Markov:
                                                                                         
                 # initialize count to 1
                 self.transitions[key] = 1
+
+        # set initial state
+        if init_state:
+            self.state = tuple(data[:order])
 
     def choose(self, suppress_errors=False):
         """Choose next value"""
