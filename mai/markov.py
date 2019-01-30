@@ -1,5 +1,7 @@
 import random
 import functools
+import numpy as np
+import matplotlib.pyplot as plt
 
 class Markov:
     """A very simple markov model"""
@@ -77,3 +79,33 @@ class Markov:
         """Clear the transition table"""
 
         self.transitions.clear()
+
+    def transition_matrix(self):
+        """Transitions as a matrix"""
+
+        s1_states = sorted(set([x[0] for x in self.transitions.keys()]))
+        s2_states = sorted(set([x[1] for x in self.transitions.keys()]))
+
+        alpha = np.zeros((len(s1_states), len(s2_states)))
+
+        for ((s1,s2), c) in self.transitions.items():
+            s1_index = s1_states.index(s1)
+            s2_index = s2_states.index(s2)
+            alpha[s1_index, s2_index] = c
+
+        return alpha
+
+    def plot_transition_matrix(self, figsize=(3,3), figscale=0.5, show=True):
+        """Plot transition matrix"""
+
+        alpha = self.transition_matrix()
+        num_rows, num_cols = alpha.shape
+        figscale = figscale
+        fig = plt.figure(figsize=(figscale*num_cols, figscale*num_rows))
+        ax = plt.gca()
+        ax.imshow(alpha, cmap='viridis', aspect='auto')
+        ax.grid(False)
+        if show: 
+            plt.show()
+        else:
+            return fig
