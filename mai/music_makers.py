@@ -49,7 +49,7 @@ def test_make_music_heterophonic():
     return make_music_heterophonic(pitches=[v1, v2, v3], durs=0.25, pgm=[1,13,24], format='MIDI')
 
 
-def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser', sr=16000):
+def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser', sr=16000, resolution=220):
     """Turn lists of numbers into music.
 
     Converts pitch and duration values into MIDI and/or audio playback. Uses
@@ -94,7 +94,7 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     durs += [durs[-1]] * (max_length - len(durs))
   
     # create a PrettyMIDI score
-    score = pretty_midi.PrettyMIDI()
+    score = pretty_midi.PrettyMIDI(resolution=resolution)
 
     # create a list of instruments one for each voice (for polypohonic pitch bend)
     num_voices = max([len(p) if isinstance(p, list) else 1 for p in pitches])
