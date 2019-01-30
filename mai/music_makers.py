@@ -96,40 +96,47 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     # create a PrettyMIDI score
     score = pretty_midi.PrettyMIDI()
 
-    # create an instrument
-    ins = pretty_midi.Instrument(program=max(pgm-1, 0), is_drum=is_drum)
+    # create a list of instruments one for each voice (for polypohonic pitch bend)
+    num_voices = max([len(p) if isinstance(p, list) else 1 for p in pitches])
+    ins = [pretty_midi.Instrument(program=max(pgm-1, 0), is_drum=is_drum) for i in range(num_voices)]
 
     # iterate through music
     now_time = 0
-    for pitch,dur in zip(pitches, durs):
+    for pitch, dur in zip(pitches, durs):
 
-        # if pitch value otherwise rest
+        # rest if pitch is None
         if pitch is not None:
 
-            # split into 12tet and microtones
-            micros, pitch = math.modf(pitch)
+            # convert to list if needed
+            pitch = pitch if isinstance(pitch, list) else [pitch]
 
-            # create a new note
-            note = pretty_midi.Note(velocity=100, pitch=int(pitch), start=now_time, end=now_time+dur)
+            # loop through each voice of the list
+            for voice_index, pitch_val in enumerate(pitch):
 
-            # and add it to the instrument
-            ins.notes.append(note)
+                # split into 12tet and microtones
+                micros, twlvtet = math.modf(pitch_val)
 
-            # if microtonal
-            if micros != 0:
-                                      
-                # create a new pitch bend
-                # note: 4096 is a semitone in standard MIDI +/-2 pitchbend range
-                micropitch = pretty_midi.PitchBend(pitch=int(round(micros*4096)), time=now_time)
+                # create a new note
+                note = pretty_midi.Note(velocity=100, pitch=int(twlvtet), start=now_time, end=now_time+dur)
 
                 # and add it to the instrument
-                ins.pitch_bends.append(micropitch)
+                ins[voice_index].notes.append(note)
+
+                # if microtonal
+                if micros != 0:
+                                          
+                    # create a new pitch bend
+                    # note: 4096 is a semitone in standard MIDI +/-2 pitchbend range
+                    micropitch = pretty_midi.PitchBend(pitch=int(round(micros*4096)), time=now_time)
+
+                    # and add it to the instrument
+                    ins[voice_index].pitch_bends.append(micropitch)
 
         # advance time
         now_time += dur
 
     # add instrument to the score
-    score.instruments.append(ins)
+    score.instruments.extend(ins)
 
     # which format to render
     if format=='MIDI':
