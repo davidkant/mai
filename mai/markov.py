@@ -63,6 +63,12 @@ class Markov:
         # return
         return choice[1]
 
+    def choice(self, suppress_errors=False, k=None):
+        """Choose next value and allow for multiple choices at a time"""
+
+        return self.choose(suppress_errors=suppress_errors) if k is None else \
+            [self.choose(suppress_errors=suppress_errors) for i in range(k)]
+
     def clear(self):
         """Clear the transition table"""
 
