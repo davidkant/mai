@@ -150,6 +150,14 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     else:
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
 
+def n_max(a):
+    '''Return the max of a list that contains None`'''
+    return max(filter(lambda x: x is not None, a))
+
+def n_min(a):
+    '''Return the min of a list that contains None'''
+    return min(filter(lambda x: x is not None, a))
+
 def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autoplay', sr=16000, figsize=(9,3), cmap='jet', show=True):
     """Plot lists of numbers as music (same API as `make_music`)"""
 
@@ -168,7 +176,7 @@ def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autopl
     curr_time = 0
     for pitch,dur in zip(pitches, durs):
         if pitch is not None:
-            pitch_normed = float(pitch - min(pitches)) / (max(pitches) - min(pitches)) if (max(pitches) - min(pitches)) != 0 else 1
+            pitch_normed = float(pitch - n_min(pitches)) / (n_max(pitches) - n_min(pitches)) if (n_max(pitches) - n_min(pitches)) != 0 else 1
             plt.scatter([curr_time], [pitch], marker='|', c='white', s=25, zorder=3)
             plt.plot([curr_time, curr_time + dur], [pitch, pitch], lw=5, solid_capstyle='butt', c=cm(pitch_normed), alpha=0.75)
         curr_time += dur
