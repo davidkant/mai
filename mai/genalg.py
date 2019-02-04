@@ -1,5 +1,6 @@
 import random
 import functools
+import matplotlib.pyplot as plt
 
 # default functions ----------------------------------------------------------------------
 
@@ -146,6 +147,16 @@ class GeneticAlgorithm:
         
         # update individuals in the fitness
         self.fitness = [[0, individual] for individual in self.population]
+
+
+def plot_genotype(genotype):
+    """Plot genotype as matrix."""
+    plt.figure(figsize=(3,0.5))
+    plt.imshow(np.atleast_2d(np.array(genotype)))
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+                
 
 def test_GA():
     ga = GeneticAlgorithm()
