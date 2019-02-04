@@ -109,7 +109,7 @@ class GeneticAlgorithm:
 
             # select population_size/2 pairs of parents from the mating pool
             parents = [(random.choice(mating_pool), random.choice(mating_pool)) 
-                       for i in range(population_size/2)]
+                       for i in range(int(population_size/2))]
 
             # generate new offspring from parents
             offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
@@ -132,7 +132,7 @@ class GeneticAlgorithm:
 
         # select population_size/2 pairs of parents from the mating pool
         parents = [(random.choice(mating_pool), random.choice(mating_pool)) 
-                   for i in range(self.population_size/2)]
+                   for i in range(int(self.population_size/2))]
 
         # generate new offspring from parents
         offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
