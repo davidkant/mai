@@ -34,7 +34,7 @@ def make_music_heterophonic(pitches=60, durs=0.25, pgm=1, is_drum=False, format=
     if format=='MIDI':
         return score 
     elif format=='audio':
-        return score.fluidsynth(fs=16000) 
+        return score.fluidsynth(fs=sr) 
     elif format=='inbrowser':
         return IPython.display.Audio(score.fluidsynth(fs=sr), rate=sr)
     elif format=='autoplay':
@@ -142,7 +142,7 @@ def make_music(pitches=60, durs=0.333, pgm=1, is_drum=False, format='inbrowser',
     if format=='MIDI':
         return score 
     elif format=='audio':
-        return score.fluidsynth(fs=16000) 
+        return score.fluidsynth(fs=sr) 
     elif format=='inbrowser':
         return IPython.display.Audio(score.fluidsynth(fs=sr), rate=sr)
     elif format=='autoplay':
