@@ -93,7 +93,7 @@ class GeneticAlgorithm:
         """Run the GA."""
 
         # initialize the population
-        if init_pop or self_population == None:
+        if init_pop or self.population == None:
             self.population = [self.random_individual() for i in range(population_size)]
 
         # loop iters times
