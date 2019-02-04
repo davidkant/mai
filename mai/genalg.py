@@ -1,4 +1,5 @@
 import random
+import functools
 
 # default functions ----------------------------------------------------------------------
 
@@ -103,7 +104,7 @@ class GeneticAlgorithm:
                        for individual in self.population]
 
             # construct mating pool of probabilities weighted by fitness score
-            mating_pool = reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
+            mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
                                                    for (score,individual) in self.fitness])
 
             # select population_size/2 pairs of parents from the mating pool
@@ -111,7 +112,7 @@ class GeneticAlgorithm:
                        for i in range(population_size/2)]
 
             # generate new offspring from parents
-            offspring = reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
+            offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
                                                  for (parent1,parent2) in parents])
 
             # mutate
@@ -126,7 +127,7 @@ class GeneticAlgorithm:
         """Evolve one generation using fitness scores in self.fitness."""
 
         # construct mating pool of probabilities weighted by fitness score
-        mating_pool = reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
+        mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
                                                for (score,individual) in self.fitness])
 
         # select population_size/2 pairs of parents from the mating pool
@@ -134,7 +135,7 @@ class GeneticAlgorithm:
                    for i in range(self.population_size/2)]
 
         # generate new offspring from parents
-        offspring = reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
+        offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
                                              for (parent1,parent2) in parents])
 
         # mutate
