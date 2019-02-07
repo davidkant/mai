@@ -47,14 +47,14 @@ def reproduce(parent1, parent2):
     # return children
     return child1, child2
 
-def mutate(genotype, mutation_prob=0.01, inbreeding_prob=0.5):
+def mutate(genotype, mutation_prob=0.01, inbreeding_prob=0.5, verbose=True):
     """Mutate!"""
 
     # do we mutate?
     if random.random() <= mutation_prob:
         
         # print it
-        print('-> muuuuutating individual {0}'.format(genotype))
+        if verbose: print('-> muuuuutating individual {0}'.format(genotype))
 
         # select a random chromosome
         gene_index = random.randrange(len(genotype))
