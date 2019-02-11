@@ -75,6 +75,35 @@ class FM1():
         dur = int(self.sr * self.attack) + int(self.sr * self.release)
         return np.array([self.next() for i in range(dur-1)])
 
+class FeedbackFM1():
+    """A coupled feedback FM synth with a few control parameters."""
+
+    def __init__(self, carrier1=900, modulator1=300, carrier2=900, modulator2=300, index1=5, index2=0, attack=1, release=1, sr=44100):
+        self.carrier1 = carrier1
+        self.modulator1 =  modulator1
+        self.carrier2 = carrier2
+        self.modulator2 = modulator2
+        self.attack = attack
+        self.release = release
+        self.sr = sr
+        self.osc1 = SinOsc(self.modulator1)
+        self.osc2 = SinOsc(self.carrier1)
+        self.index1 = Ramp(index1, index2, self.attack + self.release, sr=sr)
+        self.index2 = Ramp(index1, index2, self.attack + self.release, sr=sr)
+        self.adsr = ADSR(self.attack, 0, 0, self.release)
+    
+    def next(self):
+        osc1_next = self.osc1.next()
+        osc2_next = self.osc2.next()
+        self.osc2.freq = osc1_next * float(self.index1.next()) * float(self.modulator1) + float(self.carrier1)
+        self.osc1.freq = osc2_next * float(self.index2.next()) * float(self.modulator2) + float(self.carrier2)
+        adsr_next = self.adsr.next()
+        return [osc2_next * adsr_next, osc1_next * adsr_next]
+
+    def render(self):
+        dur = int(self.sr * self.attack) + int(self.sr * self.release)
+        return np.array([self.next() for i in range(dur-1)])
+
 def test_FM1():
     carrier = 900
     modulator = 300
@@ -95,4 +124,17 @@ def test_FM1_render():
     release = 0
     sr = 44100
     fm = FM1(carrier, modulator, index1, index2, attack, release)
+    return fm.render()
+
+def test_feedback_FM1_render():
+    carrier1 = 900
+    modulator1 = 300
+    carrier2 = 900*1.1
+    modulator2 = 300*0.9
+    index1 = 10
+    index2 = 0
+    attack = 1
+    release = 0
+    sr = 44100
+    fm = FeedbackFM1(carrier1, modulator1, carrier2, modulator2, index1, index2, attack, release)
     return fm.render()
