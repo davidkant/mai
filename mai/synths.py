@@ -78,7 +78,10 @@ class FM1():
 class FeedbackFM1():
     """A coupled feedback FM synth with a few control parameters."""
 
-    def __init__(self, carrier1=900, modulator1=300, carrier2=900, modulator2=300, index1=5, index2=0, attack=1, release=1, sr=44100):
+    def __init__(self, gain1=1, gain2=1, carrier1=900, modulator1=300, carrier2=900, modulator2=300, 
+                 index1=5, index2=0, attack=1, release=1, sr=44100):
+        self.gain1 = gain1
+        self.gain2 = gain2
         self.carrier1 = carrier1
         self.modulator1 =  modulator1
         self.carrier2 = carrier2
@@ -95,8 +98,8 @@ class FeedbackFM1():
     def next(self):
         osc1_next = self.osc1.next()
         osc2_next = self.osc2.next()
-        self.osc2.freq = osc1_next * float(self.index1.next()) * float(self.modulator1) + float(self.carrier1)
-        self.osc1.freq = osc2_next * float(self.index2.next()) * float(self.modulator2) + float(self.carrier2)
+        self.osc2.freq = self.gain1 * osc1_next * float(self.index1.next()) * float(self.modulator1) + float(self.carrier1)
+        self.osc1.freq = self.gain2 * osc2_next * float(self.index2.next()) * float(self.modulator2) + float(self.carrier2)
         adsr_next = self.adsr.next()
         return [osc2_next * adsr_next, osc1_next * adsr_next]
 
