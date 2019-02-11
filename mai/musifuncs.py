@@ -43,6 +43,15 @@ def exp_unmap(val, lo, hi):
     """Exponential unmapping."""
     return math.log(val / lo) / math.log(hi / lo)
 
+def scale(val, lo, hi, kind='lin'):
+    """Exponential or linear mapping."""
+    if kind is 'lin':
+        return linear_map(val, lo, hi)
+    elif kind is 'exp':
+        return exp_map(val, lo, hi)
+    else:
+        raise ValueError('kind must be either \'lin\' or \'exp\'')
+
 # spec ------------------------------------------------------------------------
 
 class ControlSpec: 
