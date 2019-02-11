@@ -62,10 +62,10 @@ class FM1():
         self.attack = attack
         self.release = release
         self.sr = sr
-        self.osc1 = SinOsc(self.modulator)
-        self.osc2 = SinOsc(self.carrier)
-        self.index = Ramp(index1, index2, self.attack+self.release)
-        self.adsr = ADSR(self.attack, 0, 0, self.release)
+        self.osc1 = SinOsc(self.modulator, sr=sr)
+        self.osc2 = SinOsc(self.carrier, sr=sr)
+        self.index = Ramp(index1, index2, self.attack + self.release, sr=sr)
+        self.adsr = ADSR(self.attack, 0, 0, self.release, sr=sr)
     
     def next(self):
         self.osc2.freq = self.osc1.next() * float(self.index.next()) * float(self.modulator) + float(self.carrier)
@@ -89,11 +89,11 @@ class FeedbackFM1():
         self.attack = attack
         self.release = release
         self.sr = sr
-        self.osc1 = SinOsc(self.modulator1)
-        self.osc2 = SinOsc(self.carrier1)
+        self.osc1 = SinOsc(self.modulator1, sr=sr)
+        self.osc2 = SinOsc(self.carrier1, sr=sr)
         self.index1 = Ramp(index1, index2, self.attack + self.release, sr=sr)
         self.index2 = Ramp(index1, index2, self.attack + self.release, sr=sr)
-        self.adsr = ADSR(self.attack, 0, 0, self.release)
+        self.adsr = ADSR(self.attack, 0, 0, self.release, sr=sr)
     
     def next(self):
         osc1_next = self.osc1.next()
