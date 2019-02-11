@@ -141,7 +141,7 @@ class GeneticAlgorithm:
                                              for (parent1,parent2) in parents])
 
         # mutate
-        map(lambda x: self.mutate(x, mutation_prob=mutation_prob), offspring)
+        offspring = [self.mutate(x, mutation_prob=mutation_prob) for x in offspring]
 
         # update the population
         self.population = offspring
