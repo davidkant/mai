@@ -107,6 +107,13 @@ class FeedbackFM1():
         dur = int(self.sr * self.attack) + int(self.sr * self.release)
         return np.array([self.next() for i in range(dur-1)])
 
+def feedback_fm(gain1=1, gain2=1, carrier1=900, modulator1=300, carrier2=900, modulator2=300, 
+                index1=5, index2=0, attack=0.01, release=1, sr=44100):
+    """A convenience to render as function call."""
+    return FeedbackFM1(gain1=gain1, gain2=gain2, carrier1=carrier1, modulator1=modulator1, 
+                       carrier2=carrier2, modulator2=modulator2, index1=index2, index2=index2,
+                       attack=attack, release=release, sr=sr).render()
+
 def test_FM1():
     carrier = 900
     modulator = 300
