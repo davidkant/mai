@@ -79,7 +79,7 @@ class FeedbackFM1():
     """A coupled feedback FM synth with a few control parameters."""
 
     def __init__(self, gain1=1, gain2=1, carrier1=900, modulator1=300, carrier2=900, modulator2=300, 
-                 index1=5, index2=0, attack=1, release=1, sr=44100):
+                 index1=5, index2=0, attack=0.01, release=1, sr=44100):
         self.gain1 = gain1
         self.gain2 = gain2
         self.carrier1 = carrier1
