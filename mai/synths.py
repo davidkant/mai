@@ -114,6 +114,42 @@ def feedback_fm(gain1=1, gain2=1, carrier1=900, modulator1=300, carrier2=900, mo
                        carrier2=carrier2, modulator2=modulator2, index1=index2, index2=index2,
                        attack=attack, release=release, sr=sr).render()
 
+class MixCoupledFM():
+    """A mix coupled feedback FM synth with a few control parameters."""
+
+    def __init__(self, gain1x1=1, gain2x1=1, gain1x2=1, gain2x2=1, carrier1=900, modulator1=300, carrier2=900, 
+                 modulator2=300, index1=5, index2=0, attack=0.01, release=1, sr=44100):
+        self.gain1x1 = gain1x1
+        self.gain2x1 = gain2x1
+        self.gain1x2 = gain1x2
+        self.gain2x2 = gain2x2
+        self.carrier1 = carrier1
+        self.modulator1 = modulator1
+        self.carrier2 = carrier2
+        self.modulator2 = modulator2
+        self.attack = attack
+        self.release = release
+        self.sr = sr
+        self.osc1 = SinOsc(self.modulator1, sr=sr)
+        self.osc2 = SinOsc(self.carrier1, sr=sr)
+        self.index1 = Ramp(index1, index2, self.attack + self.release, sr=sr)
+        self.index2 = Ramp(index1, index2, self.attack + self.release, sr=sr)
+        self.adsr = ADSR(self.attack, 0, 0, self.release, sr=sr)
+    
+    def next(self):
+        osc1_next = self.osc1.next()
+        osc2_next = self.osc2.next()
+        self.osc2.freq = (self.gain1x2 * osc1_next + self.gain2x2 * osc2_next) * \
+            float(self.index1.next()) * float(self.modulator1) + float(self.carrier1)
+        self.osc1.freq = (self.gain1x1 * osc1_next + self.gain2x1 * osc2_next) * \
+            float(self.index2.next()) * float(self.modulator2) + float(self.carrier2)
+        adsr_next = self.adsr.next()
+        return [osc2_next * adsr_next, osc1_next * adsr_next]
+
+    def render(self):
+        dur = int(self.sr * self.attack) + int(self.sr * self.release)
+        return np.array([self.next() for i in range(dur-1)])
+
 def test_FM1():
     carrier = 900
     modulator = 300
