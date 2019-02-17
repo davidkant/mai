@@ -165,7 +165,7 @@ def synth_waveform(gens, stride=1, format='inbrowser', sr=44100):
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
 
 
-def plot_waveform(rows, stride=1, figsize=(9,3)):
+def plot_waveform(gens, stride=1, figsize=(9,3)):
     """Plot CA gens as a waveform."""
 
     # flatten to one list and convert to numpy
