@@ -19,7 +19,7 @@ def update_gen(gen, rule):
     return [apply_rule([gen[(i-1)%len(gen)], gen[i%len(gen)], gen[(i+1)%len(gen)]], rule) for i in range(len(gen))]
 
 
-def generate(rule, size=31, iters=15, initial_pop=None, random=True):
+def generate(rule, size=31, iters=15, initial_pop=None, random=False):
     """Generate a 1d cellular automata.
     
     Parameters
