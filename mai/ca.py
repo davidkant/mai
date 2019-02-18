@@ -13,9 +13,22 @@ def apply_rule(triplet, rule):
     return rule[index]
 
 
-def update_gen(gen, rule, wrap=False):
-    """Apply an update rule to an entire generation."""  
- 
+def update_gen(gen, rule, wrap=True, edge=True):
+    """Apply an update rule to an entire generation.
+    
+    Parameters
+    ----------
+    wrap : bool
+        Whether or not CA neighbors wrap around edges.
+        
+    edge : bool
+        Whether or not to include edge cells.
+    """  
+
+    # apply rule and return
+    if not edge:
+        return [gen[0]] + [apply_rule(xyz, rule) for xyz in zip(gen[:-2], gen[1:-1], gen[2:])] + [gen[-1]]
+
     # either zero pad or wrap depending on wrap
     gen_minus_1 = [0] + gen[:-1] if not wrap else gen[-1:] + gen[:-1]
     gen_plus_1 = gen[1:] + [0] if not wrap else gen[1:] + gen[-1:]
@@ -24,7 +37,7 @@ def update_gen(gen, rule, wrap=False):
     return [apply_rule(xyz, rule) for xyz in zip(gen_minus_1, gen, gen_plus_1)]
 
 
-def generate(rule, size=31, iters=15, wrap=False, init_pop=None, init_random=False):
+def generate(rule, size=31, iters=15, wrap=True, edge=True, init_pop=None, init_random=False):
     """Generate a 1d cellular automata.
     
     Parameters
@@ -40,6 +53,9 @@ def generate(rule, size=31, iters=15, wrap=False, init_pop=None, init_random=Fal
         
     wrap : bool
         Whether or not CA neighbors wrap around edges.
+
+    edge : bool
+        Whether or not to include edge cells.
 
     initial_pop : list
         Use this to supply an initial population. Overrides supplied size argument. Should be list of 0's and 1's.
