@@ -24,7 +24,7 @@ def update_gen(gen, rule, wrap=False):
     return [apply_rule(xyz, rule) for xyz in zip(gen_minus_1, gen, gen_plus_1)]
 
 
-def generate(rule, size=31, iters=15, init_pop=None, init_random=False):
+def generate(rule, size=31, iters=15, wrap=False, init_pop=None, init_random=False):
     """Generate a 1d cellular automata.
     
     Parameters
@@ -38,6 +38,9 @@ def generate(rule, size=31, iters=15, init_pop=None, init_random=False):
     iters : int
         Number of generations to generate.
         
+    wrap : bool
+        Whether or not CA neighbors wrap around edges.
+
     initial_pop : list
         Use this to supply an initial population. Overrides supplied size argument. Should be list of 0's and 1's.
     
@@ -59,7 +62,7 @@ def generate(rule, size=31, iters=15, init_pop=None, init_random=False):
     # iterate multiple generations
     gens = [gen]
     for i in range(iters):
-        gens.append(update_gen(gens[-1], rule))
+        gens.append(update_gen(gens[-1], rule, wrap=wrap))
         
     # return as list of lists
     return gens
