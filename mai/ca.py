@@ -223,7 +223,7 @@ def synth_iFFT(gens, stride=1, format='inbrowser', sr=44100):
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
         
 
-def plot_iFFT(gens, stride=1):
+def plot_iFFT(gens, stride=1, waveform=False):
     """Plot CA gens as using iFFT synthesis."""
 
     # convert to numpy array 2d
@@ -236,9 +236,10 @@ def plot_iFFT(gens, stride=1):
     y = librosa.istft(Y)
     
     # plot waveform
-    plt.figure(figsize=(12,2))
-    plt.plot(y)
-    plt.show()
+    if waveform:
+        plt.figure(figsize=(12,2))
+        plt.plot(y)
+        plt.show()
 
     # plot FFT spectrum
     plt.figure(figsize=(12,4))
