@@ -13,10 +13,15 @@ def apply_rule(triplet, rule):
     return rule[index]
 
 
-def update_gen(gen, rule):
+def update_gen(gen, rule, wrap=False):
     """Apply an update rule to an entire generation."""  
  
-    return [apply_rule([gen[(i-1)%len(gen)], gen[i%len(gen)], gen[(i+1)%len(gen)]], rule) for i in range(len(gen))]
+    # either zero pad or wrap depending on wrap
+    gen_minus_1 = [0] + gen[:-1] if not wrap else gen[-1:] + gen[:-1]
+    gen_plus_1 = gen[1:] + [0] if not wrap else gen[1:] + gen[-1:]
+
+    # apply rule and return
+    return [apply_rule(xyz, rule) for xyz in zip(gen_minus_1, gen, gen_plus_1)]
 
 
 def generate(rule, size=31, iters=15, init_pop=None, init_random=False):
