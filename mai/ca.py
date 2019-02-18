@@ -243,5 +243,5 @@ def plot_iFFT(gens, stride=1, waveform=False):
 
     # plot FFT spectrum
     plt.figure(figsize=(12,4))
-    plt.imshow(Y.T, aspect='auto')
+    plt.imshow(Y.T, origin='lowerleft', aspect='auto')
     plt.show()
