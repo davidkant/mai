@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 # Core CA ---------------------------------------------------------------------
 
@@ -47,7 +48,7 @@ def generate(rule, size=31, iters=15, initial_pop=None, random=True):
     
     # initial generation
     gen = initial_pop if initial_pop is not None \
-        else np.random.randint(2, size=size) if random \
+        else [random.randint(0, 1) for i in range(size)] if random \
         else [0]*int(size/2) + [1] + [0]*int(size/2)
 
     # iterate multiple generations
