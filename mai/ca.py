@@ -19,7 +19,7 @@ def update_gen(gen, rule):
     return [apply_rule([gen[(i-1)%len(gen)], gen[i%len(gen)], gen[(i+1)%len(gen)]], rule) for i in range(len(gen))]
 
 
-def generate(rule, size=31, iters=15, initial_pop=None, random=False):
+def generate(rule, size=31, iters=15, init_pop=None, init_random=False):
     """Generate a 1d cellular automata.
     
     Parameters
@@ -36,7 +36,7 @@ def generate(rule, size=31, iters=15, initial_pop=None, random=False):
     initial_pop : list
         Use this to supply an initial population. Overrides supplied size argument. Should be list of 0's and 1's.
     
-    random : bool
+    init_random : bool
         Initialize initial population to random if true otherwise to middle cell on all else off.
     
     Returns
@@ -47,8 +47,8 @@ def generate(rule, size=31, iters=15, initial_pop=None, random=False):
     """
     
     # initial generation
-    gen = initial_pop if initial_pop is not None \
-        else [random.randint(0, 1) for i in range(size)] if random \
+    gen = init_pop if init_pop is not None \
+        else [random.randint(0, 1) for i in range(size)] if init_random \
         else [0]*int(size/2) + [1] + [0]*int(size/2)
 
     # iterate multiple generations
