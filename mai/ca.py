@@ -78,7 +78,7 @@ def generate(rule, size=31, iters=15, wrap=True, edge=True, init_pop=None, init_
     # iterate multiple generations
     gens = [gen]
     for i in range(iters):
-        gens.append(update_gen(gens[-1], rule, wrap=wrap))
+        gens.append(update_gen(gens[-1], rule, wrap=wrap, edge=edge))
         
     # return as list of lists
     return gens
