@@ -228,13 +228,13 @@ def synth_iFFT(gens, stride=1, format='inbrowser', sr=44100):
     """
     
     # convert to numpy array 2d
-    Y = np.array(gens) * 33
+    Y = np.array(gens)
     
     # stretch by stride
     Y = np.repeat(Y, stride, axis=0)
     
     # inverse FFT synthesis
-    y = librosa.istft(Y)
+    y = librosa.istft(Y.T)
 
     # return
     if format=='audio':
@@ -251,13 +251,13 @@ def plot_iFFT(gens, stride=1, waveform=False):
     """Plot CA gens as using iFFT synthesis."""
 
     # convert to numpy array 2d
-    Y = np.array(gens) * 33
+    Y = np.array(gens)
     
     # stretch by stride
     Y = np.repeat(Y, stride, axis=0)
 
     # inverse FFT synthesis
-    y = librosa.istft(Y)
+    y = librosa.istft(Y.T)
     
     # plot waveform
     if waveform:
