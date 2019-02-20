@@ -3,9 +3,9 @@ import random
 
 # Core CA ---------------------------------------------------------------------
 
-def rule(x):
+def rule(index):
     """Convert decimal index to binary rule list."""
-    return list(format(x, '08b'))
+    return [int(x) for x in list(format(index, '08b'))]
 
 
 def apply_rule(triplet, rule):
