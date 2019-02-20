@@ -3,6 +3,11 @@ import random
 
 # Core CA ---------------------------------------------------------------------
 
+def rule(x):
+    """Convert decimal index to binary rule list."""
+    return list(format(x, '08b'))
+
+
 def apply_rule(triplet, rule):
     """Apply an update rule to a single cell (taken together with its neighbors)."""
     
