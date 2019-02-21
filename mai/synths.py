@@ -77,7 +77,7 @@ class FM1():
 
 def fm(carrier=900, modulator=300, index1=5, index2=0, attack=0.01, release=1, sr=44100):
     """A convenience to render FM1() as function call."""
-    return FM(carrier=carrier, modulator=modulator, index1=index2, index2=index2, attack=attack, release=release, sr=sr).render()
+    return FM1(carrier=carrier, modulator=modulator, index1=index2, index2=index2, attack=attack, release=release, sr=sr).render()
 
 class FeedbackFM1():
     """A coupled feedback FM synth with a few control parameters."""
