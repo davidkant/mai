@@ -117,8 +117,7 @@ class Markov:
         s1_index = self.s1_states.index(self.state)
 
         # choose
-        # choice = random.choices(self.s2_states, weights=self.alpha[s1_index])[0]
-        choice = np.random.choice(self.s2_states, p=self.alpha[s1_index]/np.sum(self.alpha[s1_index]))
+        choice = random.choices(self.s2_states, weights=self.alpha[s1_index])[0]
 
         # update state
         self.state = tuple(list(self.state)[1:] + [choice])
