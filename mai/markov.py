@@ -14,7 +14,7 @@ class Markov:
         # initialize current state
         self.state = ()
 
-    def train(self, data, order=3, init_state=True):
+    def train(self, data, order=3, init_state=True, compute_matrix=False):
         """Train the Markov model"""
 
         # loop through data
@@ -46,7 +46,8 @@ class Markov:
             self.state = tuple(data[:order])
 
         # store transition table as matrix
-        self.compute_transition_matrix()
+        if compute_matrix=True:
+            self.compute_transition_matrix()
 
     def choose(self, suppress_errors=False):
         """Choose next value"""
