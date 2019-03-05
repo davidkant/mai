@@ -46,7 +46,7 @@ class Markov:
             self.state = tuple(data[:order])
 
         # store transition table as matrix
-        if compute_matrix=True:
+        if compute_matrix:
             self.compute_transition_matrix()
 
     def choose(self, suppress_errors=False):
