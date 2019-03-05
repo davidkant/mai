@@ -95,7 +95,7 @@ class Markov:
 
         return alpha
 
-    def plot_transition_matrix(self, figsize=(3,3), figscale=0.5, show=True):
+    def plot_transition_matrix(self, figsize=(3,3), figscale=0.5, cmap='viridis', show=True):
         """Plot transition matrix"""
 
         alpha = self.transition_matrix()
@@ -103,7 +103,7 @@ class Markov:
         figscale = figscale
         fig = plt.figure(figsize=(figscale*num_cols, figscale*num_rows))
         ax = plt.gca()
-        ax.imshow(alpha, cmap='viridis', aspect='auto')
+        ax.imshow(alpha, cmap=cmap, aspect='auto')
         ax.grid(False)
         if show: 
             plt.show()
