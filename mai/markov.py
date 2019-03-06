@@ -156,3 +156,8 @@ class Markov:
             plt.show()
         else:
             return fig
+
+    def print_transitions(self):
+        """Pretty print transition tabale"""
+        for k,v in self.transitions.items():
+              print("{0} -> {1}".format(k[0], k[1]))
