@@ -145,6 +145,7 @@ class Markov:
     def plot_transition_matrix(self, figsize=(3,3), figscale=0.5, cmap='viridis', show=True):
         """Plot transition matrix"""
 
+        self.compute_transition_matrix()
         alpha = self.transition_matrix()
         num_rows, num_cols = alpha.shape
         figscale = figscale
