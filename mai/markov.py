@@ -73,11 +73,21 @@ class Markov:
         # return
         return choice[1]
 
-    def choice(self, suppress_errors=False, k=None):
+    def choice(self, suppress_errors=False, k=None, include_initial=True):
         """Choose next value and allow for multiple choices at a time"""
 
-        return self.choose(suppress_errors=suppress_errors) if k is None else \
+        # store initial state
+        initial_state = self.state
+
+        # generate new sequence
+        seq = self.choose(suppress_errors=suppress_errors) if k is None else \
             [self.choose(suppress_errors=suppress_errors) for i in range(k)]
+        
+        # prepend first order elements
+        if include_initial:
+            seq = list(initial_state) + seq
+
+        return seq
 
     def clear(self):
         """Clear the transition table"""
