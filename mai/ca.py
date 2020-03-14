@@ -160,6 +160,50 @@ def animate(gens, interval=200):
     return anim
 
 
+def animate_1d(gens, interval=200, grid=True):
+  """1d animation."""
+  
+  # we'll need these
+  num_cols = len(gens[0])
+  num_rows = len(gens)
+
+  # set up figure
+  fig, ax = plt.subplots(figsize=(num_cols*0.3, 1*0.3))
+  plt.close()
+  ax.set_xlim([-1, num_cols])
+  ax.set_xticks(np.arange(0,num_cols+1,1)-0.5)
+  ax.set_xticklabels([])
+  ax.set_ylim([-0.5, 1.5])
+  ax.set_yticks([0.5])
+  ax.set_yticklabels([0])
+  ax.tick_params(axis='y', length=0)
+  if grid:
+    ax.grid(color='lightgrey', linestyle='-', linewidth=2)
+  line, = ax.plot([],[], 's', c='k', markersize=15)
+
+  # update function
+  data = []
+  def update(i, data):
+    # current row
+    row = gens[i]
+    # filter for cells that are on
+    new_data = [index for index,val in enumerate(row) if val == 1]
+    # offset y coord by current row
+    new_data = [(index,0.5) for index in new_data]
+    # update plot data
+    line.set_data([x[0] for x in new_data], [x[1] for x in new_data])
+    ax.set_yticklabels([i])
+    # return
+    return line,
+
+  # animation
+  anim = animation.FuncAnimation(fig, update, fargs=(data,), frames=num_rows, interval=interval, blit=True)
+
+  # run it as html
+  rc('animation', html='jshtml')
+  return anim
+
+
 # Synthesis -------------------------------------------------------------------
 
 import IPython.display
@@ -167,7 +211,7 @@ import librosa
 
 def synth_waveform(gens, stride=1, format='inbrowser', sr=44100):
     """Synthesize CA gens as a waveform.
-    
+
     Parameters
     ----------
     gens : list of lists
@@ -176,17 +220,17 @@ def synth_waveform(gens, stride=1, format='inbrowser', sr=44100):
         Samples per CA cell
     format : string
         Which format to render sound to?
-            - `'audio'` returns waveforms as a `numpy` nd.array  
-            - `'inbrowser'` returns `IPython.display.Audio` widget 
+            - `'audio'` returns waveforms as a `numpy` nd.array
+            - `'inbrowser'` returns `IPython.display.Audio` widget
             - `'autoplay'` returns `IPython.display.Audio` widget and plays it
     sr : int
         Sample rate
-    
+
     Returns
     -------
     y : depends on the value of `format`
     """
-    
+
     # flatten to one list and convert to numpy
     y = np.ravel(gens)
 
@@ -209,7 +253,7 @@ def plot_waveform(gens, stride=1, figsize=(9,3)):
 
     # flatten to one list and convert to numpy
     y = np.ravel(gens)
-    
+
     # stretch by stride
     y = np.repeat(y, stride)
 
@@ -217,11 +261,11 @@ def plot_waveform(gens, stride=1, figsize=(9,3)):
     plt.figure(figsize=figsize)
     plt.plot(y)
     plt.show()
-    
+
 
 def synth_iFFT(gens, stride=1, format='inbrowser', sr=44100):
     """Synthesize CA gens using iFFT synthesis.
-    
+
     Parameters
     ----------
     gens : list of lists
@@ -230,23 +274,23 @@ def synth_iFFT(gens, stride=1, format='inbrowser', sr=44100):
         Frames per CA generation
     format : string
         Which format to render sound to?
-            - `'audio'` returns waveforms as a `numpy` nd.array  
-            - `'inbrowser'` returns `IPython.display.Audio` widget 
+            - `'audio'` returns waveforms as a `numpy` nd.array
+            - `'inbrowser'` returns `IPython.display.Audio` widget
             - `'autoplay'` returns `IPython.display.Audio` widget and plays it
     sr : int
         Sample rate
-    
+
     Returns
     -------
     y : depends on the value of `format`
     """
-    
+
     # convert to numpy array 2d
     Y = np.array(gens)
-    
+
     # stretch by stride
     Y = np.repeat(Y, stride, axis=0)
-    
+
     # inverse FFT synthesis
     y = librosa.istft(Y.T)
 
@@ -259,20 +303,20 @@ def synth_iFFT(gens, stride=1, format='inbrowser', sr=44100):
         return IPython.display.Audio(y, rate=sr, autoplay=True)
     else:
         raise ValueError("So sorry but your `format` argument did not match one of the available options")
-        
+
 
 def plot_iFFT(gens, stride=1, waveform=False):
     """Plot CA gens as using iFFT synthesis."""
 
     # convert to numpy array 2d
     Y = np.array(gens)
-    
+
     # stretch by stride
     Y = np.repeat(Y, stride, axis=0)
 
     # inverse FFT synthesis
     y = librosa.istft(Y.T)
-    
+
     # plot waveform
     if waveform:
         plt.figure(figsize=(12,2))
