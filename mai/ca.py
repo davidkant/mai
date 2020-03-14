@@ -178,8 +178,8 @@ def animate_1d(gens, interval=200, grid=True):
   ax.set_yticklabels([0])
   ax.tick_params(axis='y', length=0)
   if grid:
-    ax.grid(color='lightgrey', linestyle='-', linewidth=2)
-  line, = ax.plot([],[], 's', c='k', markersize=15)
+    ax.grid(axis='x', color='lightgrey', linestyle='-', linewidth=1)
+  line, = ax.plot([],[], 's', c='k', markersize=16)
 
   # update function
   data = []
