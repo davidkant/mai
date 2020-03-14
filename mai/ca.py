@@ -227,7 +227,7 @@ def animate_1d2d(gens, interval=200):
   ax0.set_yticks([0.5])
   ax0.set_yticklabels([0])
   ax0.tick_params(axis='y', length=0)
-  line1, = ax0.plot([],[], 's', c='k', markersize=15)
+  line1, = ax0.plot([],[], 's', c='k', markersize=16)
 
   ax1.set_xlim([-1, num_cols])
   ax1.set_xticks(np.arange(0,num_cols+1,1)-0.5)
@@ -236,7 +236,7 @@ def animate_1d2d(gens, interval=200):
   ax1.set_yticks(np.arange(1,num_rows+2,1)-0.5)
   ax1.set_yticklabels([])
   ax1.set_ylabel('Generation')
-  line2, = ax1.plot([],[], 's', c='k', markersize=15)
+  line2, = ax1.plot([],[], 's', c='k', markersize=16)
 
   # update function
   data = []
