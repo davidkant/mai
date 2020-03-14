@@ -93,16 +93,25 @@ def generate(rule, size=31, iters=15, wrap=True, edge=True, init_pop=None, init_
 
 import matplotlib.pyplot as plt
 
-def plot(gens):
-    """Plot a set of 1d CA generations."""
-    fig, ax = plt.subplots(figsize=(9,9))
-    ax.imshow(np.array(gens))
-    ax.set_xticks(np.arange(0, len(gens[0]), 1));
-    ax.set_yticks(np.arange(0, len(gens), 1));
+def plot(gens, grid=True):
+  """Plot a set of 1d CA generations."""
+  fig, ax = plt.subplots(figsize=(9,9))
+  ax.imshow(np.array(gens), cmap='gray_r')
+
+  if not grid:
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+  if grid:
+    ax.set_xticks(np.arange(0, len(gens[0]), 1)+0.5);
+    ax.set_yticks(np.arange(0, len(gens), 1)+0.5);
     ax.set_xticklabels([])
     ax.set_yticklabels([])
-    ax.grid(color='grey', linestyle='-', linewidth=1)
-    plt.show()
+    ax.tick_params(axis='x', length=0)
+    ax.tick_params(axis='y', length=0)
+    ax.grid(color='lightgrey', linestyle='-', linewidth=2)
+
+  plt.show()
 
 
 # Animate ---------------------------------------------------------------------
