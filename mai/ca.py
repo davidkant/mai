@@ -204,6 +204,69 @@ def animate_1d(gens, interval=200, grid=True):
   return anim
 
 
+import matplotlib.gridspec as gridspec
+
+def animate_1d2d(gens, interval=200):
+  """Both 1d and 2d animation combined."""
+
+  # we'll need these
+  num_cols = len(gens[0])
+  num_rows = len(gens)
+
+  # set up figure
+  fig = plt.figure(figsize=(num_cols*0.3, (num_rows+3)*0.3)) # +3 to even it out on vert
+  gs = gridspec.GridSpec(2, 1, height_ratios=[1, num_rows])
+  ax0 = plt.subplot(gs[0])
+  ax1 = plt.subplot(gs[1])
+  plt.close()
+
+  ax0.set_xlim([-1, num_cols])
+  ax0.set_xticks(np.arange(0,num_cols+1,1)-0.5)
+  ax0.set_xticklabels([])
+  ax0.set_ylim([-0.5, 1.5])
+  ax0.set_yticks([0.5])
+  ax0.set_yticklabels([0])
+  ax0.tick_params(axis='y', length=0)
+  line1, = ax0.plot([],[], 's', c='k', markersize=15)
+
+  ax1.set_xlim([-1, num_cols])
+  ax1.set_xticks(np.arange(0,num_cols+1,1)-0.5)
+  ax1.set_xticklabels([])
+  ax1.set_ylim([0, num_rows+1])
+  ax1.set_yticks(np.arange(1,num_rows+2,1)-0.5)
+  ax1.set_yticklabels([])
+  ax1.set_ylabel('Generation')
+  line2, = ax1.plot([],[], 's', c='k', markersize=15)
+
+  # update function
+  data = []
+  def update(i, data):
+    # current row
+    row = gens[i]
+    # filter for cells that are on
+    new_data = [index for index,val in enumerate(row) if val == 1]
+    # offset y coord by current row
+    new_data_1d = [(index, 0.5) for index in new_data]
+    new_data = [(index,num_rows-i) for index in new_data]
+    # append to data
+    data += new_data
+    # update plot data
+    line2.set_data([x[0] for x in data], [x[1] for x in data])
+    ax1.set_yticklabels(['']*(num_rows-i) + (['\n{}'.format(x) for x in range(i+1)])[::-1])
+    # update plot data
+    line1.set_data([x[0] for x in new_data_1d], [x[1] for x in new_data_1d])
+    ax0.set_yticklabels([i])
+    # return
+    return line2,
+
+  # animation
+  anim = animation.FuncAnimation(fig, update, fargs=(data,), frames=num_rows, interval=interval, blit=True)
+
+  # run it as html
+  rc('animation', html='jshtml')
+  return anim
+
+
 # Synthesis -------------------------------------------------------------------
 
 import IPython.display
