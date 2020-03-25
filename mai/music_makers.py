@@ -174,3 +174,56 @@ def make_music_plot(pitches=60, durs=0.333, pgm=1, is_drum=False, format='autopl
 
     if show:
         plt.show()
+
+def make_music_heterophonic_plot(
+    pitches=60,
+    durs=0.333,
+    pgm=1,
+    is_drum=False,
+    format="autoplay",
+    sr=16000,
+    figsize=(9, 3),
+    cmap="jet",
+    show=True,
+):
+    """Plot lists of numbers as music (same API as `make_music`)"""
+
+    # check and convert to list if needed
+    pitches = pitches if isinstance(pitches, list) else [pitches]
+    durs = durs if isinstance(durs, list) else [durs]
+    pgm = pgm if isinstance(pgm, list) else [pgm]
+    is_drum = is_drum if isinstance(is_drum, list) else [is_drum]
+
+    # extend short lists if size mismatch (in number of voices)
+    num_voices = max(len(pitches), len(durs), len(pgm), len(is_drum))
+    pitches += [pitches[-1]] * (num_voices - len(pitches))
+    durs += [durs[-1]] * (num_voices - len(durs))
+    pgm += [pgm[-1]] * (num_voices - len(pgm))
+    is_drum += [is_drum[-1]] * (num_voices - len(is_drum))
+
+    # plot
+    plt.figure(figsize=figsize)
+    cm = plt.cm.get_cmap(name=cmap)
+    for i in range(len(pitches)):
+        curr_time = 0
+        for pitch, dur in zip(pitches[i], durs[i]):
+            pitch_normed = (
+                float(pitch - min(pitches[i])) / (max(pitches[i]) - min(pitches[i]))
+                if (max(pitches[i]) - min(pitches[i])) != 0
+                else 1
+            )
+            plt.scatter([curr_time], [pitch], marker="|", c="white", s=25, zorder=3)
+            plt.plot(
+                [curr_time, curr_time + dur],
+                [pitch, pitch],
+                lw=5,
+                solid_capstyle="butt",
+                # c=cm(pitch_normed),
+                c=['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'][i%10],
+                alpha=0.75,
+            )
+            curr_time += dur
+
+    if show:
+        print() # give it a little extra space
+        plt.show()
