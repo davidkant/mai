@@ -17,8 +17,6 @@ from IPython.display import display, HTML
 
 """
     # TODO:
-    - override pgm=1
-    - use return statements
     - edit doc to reflect storing instance variables
     - args and doc are burried down one layer on many funcs including audio to midi
     - write a to string function to display parameters
@@ -278,7 +276,7 @@ class Listener:
 
     def plot_audio_to_midi(self):
         """Plot audio to midi transcription."""
-        return make_music_plot(list(self.pitches), durs=list(self.durations))
+        make_music_plot(list(self.pitches), durs=list(self.durations))
 
     def play_audio_to_midi(self, pgm=1):
         """Play audio to midi transcription."""
@@ -288,7 +286,7 @@ class Listener:
             pgm=pgm,
             format='inbrowser'
         )
-        return IPython.display.display(d)
+        IPython.display.display(d)
 
     def print_musical_features(self):
         """Pretty print musical features data."""
@@ -758,13 +756,13 @@ class Orchestra:
         )
 
         if format=='inbrowser':
-            return IPython.display.display(d)
+            IPython.display.display(d)
         else:
             return d
 
     def plot_response(self):
         """Plot response as heterophonic music plot."""
-        return make_music_heterophonic_plot(self.pitches, self.durations)
+        make_music_heterophonic_plot(self.pitches, self.durations)
 
     def print_response(self, listener_features):
         """Display a table comparing features."""
