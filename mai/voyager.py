@@ -88,37 +88,37 @@ class Voyager:
         self.listener.plot_musical_features()
         self.listener.plot_scale_and_pitch_probs()
 
-    def setphrasebehavior(self, kind='manual', params=None):
+    def setphrasebehavior(self, kind='manual', **override):
         """Set response parameters.
 
         Optional kwarg to force a response_behavior:
           - one of {'manual', 'ignore', 'imitate', 'oppose'}
-          - 'manual' uses the params kwarg to pass params
+          - 'manual' uses the override kwargs to pass params
         """
         if kind is 'ignore':
-            self.set_ignore_response()
+            self.set_ignore_response(**override)
         elif kind is 'imitate':
-            self.set_imitate_response()
+            self.set_imitate_response(**override)
         elif kind is 'oppose':
-            self.set_oppose_response()
+            self.set_oppose_response(**override)
         else:
-            self.set_manual_response(**params)
+            self.set_manual_response(**override)
 
     def respond(self):
         """Generate a response using current parameter values."""
         self.orchestra.response()
 
-    def set_ignore_response(self):
+    def set_ignore_response(self, **override):
         """GenSeterate an ignore response parameters."""
-        self.orchestra.ignore_response()
+        self.orchestra.ignore_response(**override)
 
-    def set_imitate_response(self, num_players=None):
+    def set_imitate_response(self, **override):
         """Generate an imitate response parameters."""
-        self.orchestra.imitate_response(self.listener.features, num_players)
+        self.orchestra.imitate_response(self.listener.features, **override)
 
-    def set_oppose_response(self):
+    def set_oppose_response(self, **override):
         """Generate an oppose response parameters."""
-        self.orchestra.oppose_response(self.listener.features)
+        self.orchestra.oppose_response(self.listener.features, **override)
 
     def set_manual_response(self, **params):
         """Generates a manual response parameters."""
@@ -563,7 +563,7 @@ class Orchestra:
         self.pitches = pitches
         self.durations = durs
 
-    def ignore_response(self):
+    def ignore_response(self, **override):
         """Ignore listener data and generate a random response.
 
         Note:
@@ -572,10 +572,17 @@ class Orchestra:
         Returns:
             response parameters: parameter dict.
         """
+        # random parameters
         response_parameters = self.random_parameters()
+
+        # set override parameters
+        for k,v in override.items():
+            if k in response_parameters:
+                response_parameters[k] = v
+
         self.parameters = response_parameters
 
-    def imitate_response(self, listener_features, num_players=None):
+    def imitate_response(self, listener_features, **override):
         """Generate a response that imitates listener data.
 
         Note:
@@ -591,13 +598,14 @@ class Orchestra:
         for param in listener_features.keys():
             response_parameters[param] = listener_features[param]
 
-        # force one player
-        if num_players:
-            response_parameters["num_players"] = num_players
+        # set override parameters
+        for k,v in override.items():
+            if k in response_parameters:
+                response_parameters[k] = v
 
         self.parameters = response_parameters
 
-    def oppose_response(self, listener_features):
+    def oppose_response(self, listener_features, keep_length=False, **override):
         """Generate a response that opposes listener data.
 
         Note: length is opposd here.
@@ -656,8 +664,14 @@ class Orchestra:
         # scale tbd
         # pitch set tbd
 
+        # set override parameters
+        for k,v in override.items():
+            if k in response_parameters:
+                response_parameters[k] = v
+
         # but keep length the same!
-        # response_parameters["length"] = listener_features["length"]
+        if keep_length:
+            response_parameters["length"] = listener_features["length"]
 
         self.parameters = response_parameters
 
