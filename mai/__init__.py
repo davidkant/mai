@@ -11,6 +11,7 @@ from . import io
 # from . import notation
 from . import amb
 from . import ca
+from . import voyager
 
 from . music_makers import make_music
 from . music_makers import make_music_plot
