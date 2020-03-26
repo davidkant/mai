@@ -282,5 +282,4 @@ def make_music_heterophonic_plot(
             curr_time += dur
 
     if show:
-        print() # give it a little extra space
         plt.show()
