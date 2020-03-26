@@ -320,7 +320,7 @@ def ppitch(y, sr=44100, n_fft=4096, win_length=1024, hop_length=2048,
       W = np.matrix(np.diag(mask * weights))
 
       # do least squares
-      fund = np.linalg.lstsq(W*A, W*b)[0][0].item()
+      fund = np.linalg.lstsq(W*A, W*b, rcond=None)[0][0].item()
 
       # append
       frame_fundamentals += [fund]
