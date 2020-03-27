@@ -8,6 +8,7 @@ def make_music_heterophonic(
     pitches=60,
     durs=0.25,
     pgm=1,
+    pan=64,
     is_drum=False,
     format='inbrowser',
     sr=16000
@@ -18,6 +19,7 @@ def make_music_heterophonic(
     pitches = pitches if isinstance(pitches, list) else [pitches]
     durs = durs if isinstance(durs, list) else [durs]
     pgm = pgm if isinstance(pgm, list) else [pgm]
+    pan = pan if isinstance(pan, list) else [pan]
     is_drum = is_drum if isinstance(is_drum, list) else [is_drum]
 
     # extend short lists if size mismatch (in number of voices)
@@ -25,12 +27,20 @@ def make_music_heterophonic(
     pitches += [pitches[-1]] * (num_voices - len(pitches))
     durs += [durs[-1]] * (num_voices - len(durs))
     pgm += [pgm[-1]] * (num_voices - len(pgm))
+    pan += [pan[-1]] * (num_voices - len(pan))
     is_drum += [is_drum[-1]] * (num_voices - len(is_drum))
 
     # make music for each and collect into list of instruments
     ins = [
-        make_music(pitches=p, durs=d, pgm=i, is_drum=x, format='MIDI').instruments[0]
-           for p,d,i,x in zip(pitches, durs, pgm, is_drum)
+        make_music(
+            pitches=p,
+            durs=d,
+            pgm=i,
+            pan=c,
+            is_drum=x,
+            format='MIDI'
+        ).instruments[0]
+        for p,d,i,c,x in zip(pitches, durs, pgm, pan, is_drum)
     ]
 
     # create a PrettyMIDI score
@@ -67,6 +77,7 @@ def make_music(
     pitches=60,
     durs=0.333,
     pgm=1,
+    pan=64,
     is_drum=False,
     format="inbrowser",
     sr=16000,
@@ -87,6 +98,8 @@ def make_music(
         List of durations, or scalar if constant duration.
     pgm: number
         MIDI program number, in range ``[0, 127]``.
+    pan: number
+        Pan value, in range ``[0, 127]``.
     is_drum : bool
         If True use percussion channel 10.
     format : string
@@ -124,6 +137,11 @@ def make_music(
         pretty_midi.Instrument(program=max(pgm - 1, 0), is_drum=is_drum)
         for i in range(num_voices)
     ]
+
+    # apply pan to all instruments
+    for instrument in ins:
+        cc = pretty_midi.ControlChange(10, pan, 0)
+        instrument.control_changes.append(ctrl)
 
     # iterate through music
     now_time = 0
