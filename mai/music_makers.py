@@ -141,7 +141,7 @@ def make_music(
     # apply pan to all instruments
     for instrument in ins:
         cc = pretty_midi.ControlChange(10, pan, 0)
-        instrument.control_changes.append(ctrl)
+        instrument.control_changes.append(cc)
 
     # iterate through music
     now_time = 0
