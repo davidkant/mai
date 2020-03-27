@@ -746,10 +746,16 @@ class Orchestra:
     def play_response(self, sr=16000, format='inbrowser'):
         """Render to audio and play."""
 
+        pan = [
+            round(127 / (self.parameters["num_players"] + 1) * (i + 1))
+            for i in range(self.parameters["num_players"])
+        ]
+
         d = make_music_heterophonic(
             self.pitches,
             durs=self.durations,
             pgm=self.parameters['pgm'],
+            pan=pan
             is_drum=self.parameters['is_drum'],
             format=format,
             sr=sr
