@@ -755,7 +755,7 @@ class Orchestra:
             self.pitches,
             durs=self.durations,
             pgm=self.parameters['pgm'],
-            pan=pan
+            pan=pan,
             is_drum=self.parameters['is_drum'],
             format=format,
             sr=sr
