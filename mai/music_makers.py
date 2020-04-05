@@ -249,7 +249,7 @@ def make_music_plot(
 
     # format
     if pitch_range:
-        plt.ylim([pitch_range])
+        plt.ylim(pitch_range)
 
     if show:
         plt.show()
@@ -307,7 +307,7 @@ def make_music_heterophonic_plot(
 
     # format
     if pitch_range:
-        plt.ylim([pitch_range])
+        plt.ylim(pitch_range)
 
     if show:
         plt.show()
