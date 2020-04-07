@@ -265,6 +265,7 @@ def make_music_heterophonic_plot(
     figsize=(9, 3),
     cmap="jet",
     pitch_range=None,
+    time_range=None,
     show=True,
 ):
     """Plot lists of numbers as music (same API as `make_music`)"""
@@ -308,6 +309,9 @@ def make_music_heterophonic_plot(
     # format
     if pitch_range:
         plt.ylim(pitch_range)
+
+    if time_range:
+        plt.xlim(time_range)
 
     if show:
         plt.show()

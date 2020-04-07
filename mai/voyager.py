@@ -17,11 +17,18 @@ from IPython.display import display, HTML
 
 """
     # TODO:
+    - length in seconds
+    - pan please!
     - edit doc to reflect storing instance variables
     - args and doc are burried down one layer on many funcs including audio to midi
     - write a to string function to display parameters
 """
 
+
+PITCH_MIN = 30
+PITCH_MAX = 90
+TIME_MIN = -1
+TIME_MAX = 10
 
 FEATURES = [
     "pitch_center",
@@ -128,7 +135,7 @@ class Voyager:
 
     def play_response(self, sr=16000, format='inbrowser'):
         """Play orchestra response."""
-        self.orchestra.play_response(sr=sr, format=format)
+        return self.orchestra.play_response(sr=sr, format=format)
 
     def print_response(self):
         """Print BOTH orchestra and listener features."""
@@ -419,6 +426,7 @@ class Orchestra:
         rhythm=0.5,
         length=33,
         volume=100,
+        pan=64,
     ):
         """Simple version of a Player for George Lewis' Voyager.
 
@@ -449,6 +457,7 @@ class Orchestra:
             rhythm: Deviation from the pulse.
             length: Number of notes to generate.
             volume: Note velocity.
+            pan: Pan value.
 
         Return:
             music:
@@ -768,7 +777,12 @@ class Orchestra:
 
     def plot_response(self):
         """Plot response as heterophonic music plot."""
-        make_music_heterophonic_plot(self.pitches, self.durations)
+        make_music_heterophonic_plot(
+            self.pitches,
+            self.durations,
+            pitch_range=[PITCH_MIN, PITCH_MAX],
+            time_range=[TIME_MIN, TIME_MAX],
+        )
 
     def print_response(self, listener_features):
         """Display a table comparing features."""
