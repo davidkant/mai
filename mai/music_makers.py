@@ -314,7 +314,7 @@ def make_music_heterophonic_plot(
         plt.ylim([xmin, xmax])
 
     if time_range:
-        yimn, ymax = plt.ylim()
+        ymin, ymax = plt.ylim()
         ymin = min(ymin, time_range[0])
         ymax = max(ymax, time_range[1])
         plt.xlim([ymin, ymax])
