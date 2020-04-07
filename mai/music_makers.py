@@ -308,10 +308,16 @@ def make_music_heterophonic_plot(
 
     # format
     if pitch_range:
-        plt.ylim(pitch_range)
+        xmin, xmax = plt.xlim()
+        xmin = min(xmin, pitch_range[0])
+        xmax = max(xmax, pitch_range[1])
+        plt.ylim([xmin, xmax])
 
     if time_range:
-        plt.xlim(time_range)
+        yimn, ymax = plt.ylim()
+        ymin = min(ymin, time_range[0])
+        ymax = max(ymax, time_range[1])
+        plt.xlim([ymin, ymax])
 
     if show:
         plt.show()
