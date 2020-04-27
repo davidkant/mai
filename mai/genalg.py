@@ -149,6 +149,12 @@ class GeneticAlgorithm:
         # update individuals in the fitness
         self.fitness = [[0, individual] for individual in self.population]
 
+    def set_fitness(self, score, individual=0):
+        """Set individual fitness score."""
+
+        # update fitness score
+        self.fitness[individual][0] = score
+
 
 def plot_genotype(genotype):
     """Plot genotype as matrix."""
