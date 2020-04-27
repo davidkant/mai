@@ -188,11 +188,11 @@ class GeneticAlgorithm:
         if all:
 
             alpha = np.array(self.generations)
-            n_iters, pop_size, geno_len = alpha.shape
+            alpha = np.swapaxes(alpha, 1, 2)
+            n_iters, geno_len, pop_size = alpha.shape
 
             alpha_hat = np.reshape(alpha, (n_iters * geno_len, pop_size)).T
 
-            fig = plt.figure(figsize=(5,5))
             plt.imshow(alpha_hat, cmap='gray_r', aspect='auto')
             ax = plt.gca()
             ax.set_xticks([])
