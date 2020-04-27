@@ -125,7 +125,7 @@ class GeneticAlgorithm:
 
             # update the population
             self.population = offspring
-            self.generations += [copy.copy(list(self.population))]
+            self.generations += [copy.copy(self.population)]
 
         return self.population
 
@@ -159,6 +159,48 @@ class GeneticAlgorithm:
 
         # update fitness score
         self.fitness[individual][0] = score
+
+
+    def plot_generations(self, start=0, end=6, all=False):
+        """Plot generations."""
+
+        if not all:
+
+            gens = self.generations[start:end]
+            num_gens = len(gens)
+
+            fig, axes = plt.subplots(nrows=1, ncols=num_gens)
+
+            for i,gen in enumerate(gens):
+              axes[i].imshow(np.array(gen), cmap='gray_r')
+
+            for i,ax in enumerate(axes):
+                ax.set_xticks([])
+                ax.set_yticks([])
+                if i == 0:
+                    ax.set_ylabel('Individuals')
+                ax.set_xlabel('Genotypes')
+                ax.set_title('Gen {}'.format(i))
+
+            plt.tight_layout()
+            plt.show()
+
+        if all:
+
+            alpha = np.array(self.generations)
+            n_iters, pop_size, geno_len = alpha.shape
+
+            alpha_hat = np.reshape(alpha, (n_iters * geno_len, pop_size)).T
+
+            fig = plt.figure(figsize=(5,5))
+            plt.imshow(alpha_hat, cmap='gray_r', aspect='auto')
+            ax = plt.gca()
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_ylabel('Individuals')
+            ax.set_xlabel('Genotypes by Generation')
+            ax.set_title('Generations')
+            plt.show()
 
 
 def plot_genotype(genotype):
