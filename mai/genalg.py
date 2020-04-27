@@ -88,7 +88,7 @@ class GeneticAlgorithm:
 
         # initialize individuals
         self.population = [self.random_individual() for i in range(population_size)]
-        self.generations = [copy(self.population)]
+        self.generations = [copy.copy(self.population)]
 
         # initialize fitness to 0 for all
         self.fitness = [[0, individual] for individual in self.population]
@@ -99,7 +99,7 @@ class GeneticAlgorithm:
         # initialize the population
         if init_pop or self.population == None:
             self.population = [self.random_individual() for i in range(population_size)]
-            self.generations = [copy(self.population)]
+            self.generations = [copy.copy(self.population)]
 
         # loop iters times
         for i in range(iters):
@@ -125,7 +125,7 @@ class GeneticAlgorithm:
 
             # update the population
             self.population = offspring
-            self.generations += [copy(self.population)]
+            self.generations += [copy.copy(self.population)]
 
         return self.population
 
@@ -149,7 +149,7 @@ class GeneticAlgorithm:
 
         # update the population
         self.population = offspring
-        self.generations = [copy(self.population)]
+        self.generations = [copy.copy(self.population)]
 
         # update individuals in the fitness
         self.fitness = [[0, individual] for individual in self.population]
