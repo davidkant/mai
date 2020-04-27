@@ -149,7 +149,7 @@ class GeneticAlgorithm:
 
         # update the population
         self.population = offspring
-        self.generations = [copy.copy(self.population)]
+        self.generations += [copy.copy(self.population)]
 
         # update individuals in the fitness
         self.fitness = [[0, individual] for individual in self.population]
