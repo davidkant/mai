@@ -125,7 +125,7 @@ class GeneticAlgorithm:
 
             # update the population
             self.population = offspring
-            self.generations += [copy.copy(self.population)]
+            self.generations += [copy.copy(list(self.population))]
 
         return self.population
 
