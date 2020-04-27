@@ -12,26 +12,26 @@ def random_individual():
 
 def to_phenotype(genotype):
     """Trivial mapping genotype -> phenotype (for now...)"""
-            
+
     return genotype
 
 def fitness_func(individual):
-    """Evaluate the fitness of an individual using hamming 
+    """Evaluate the fitness of an individual using hamming
     distance to [1,1, ... , 1]. returns value within [0,1]
     """
-                    
+
     # ideal vector
     target = [1] * len(individual)
-                            
+
     # hamming distance to ideal vector
     distance = sum([abs(x - y) for (x,y) in zip(individual, target)]) / float(len(target))
-                                    
+
     # invert for fitness
     return 1 - distance
 
 def to_weight(fitness, m=100, b=1):
     """Convert from fitness score to probability weighting"""
-            
+
     return int(round(fitness*m + b))
 
 def reproduce(parent1, parent2):
@@ -52,7 +52,7 @@ def mutate(genotype, mutation_prob=0.01, inbreeding_prob=0.5, verbose=True):
 
     # do we mutate?
     if random.random() <= mutation_prob:
-        
+
         # print it
         if verbose: print('-> muuuuutating individual {0}'.format(genotype))
 
@@ -102,19 +102,19 @@ class GeneticAlgorithm:
         for i in range(iters):
 
             # evaluate fitness over the entire population
-            self.fitness = [(self.fitness_func(self.to_phenotype(individual)), individual) 
+            self.fitness = [(self.fitness_func(self.to_phenotype(individual)), individual)
                        for individual in self.population]
 
             # construct mating pool of probabilities weighted by fitness score
-            mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
+            mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score)
                                                    for (score,individual) in self.fitness])
 
             # select population_size/2 pairs of parents from the mating pool
-            parents = [(random.choice(mating_pool), random.choice(mating_pool)) 
+            parents = [(random.choice(mating_pool), random.choice(mating_pool))
                        for i in range(int(population_size/2))]
 
             # generate new offspring from parents
-            offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
+            offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2)
                                                  for (parent1,parent2) in parents])
 
             # mutate
@@ -129,15 +129,15 @@ class GeneticAlgorithm:
         """Evolve one generation using fitness scores in self.fitness."""
 
         # construct mating pool of probabilities weighted by fitness score
-        mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score) 
+        mating_pool = functools.reduce(lambda x,y: x+y, [[individual]*self.to_weight(score)
                                                for (score,individual) in self.fitness])
 
         # select population_size/2 pairs of parents from the mating pool
-        parents = [(random.choice(mating_pool), random.choice(mating_pool)) 
+        parents = [(random.choice(mating_pool), random.choice(mating_pool))
                    for i in range(int(self.population_size/2))]
 
         # generate new offspring from parents
-        offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2) 
+        offspring = functools.reduce(lambda x,y: x+y, [self.reproduce(parent1, parent2)
                                              for (parent1,parent2) in parents])
 
         # mutate
@@ -145,7 +145,7 @@ class GeneticAlgorithm:
 
         # update the population
         self.population = offspring
-        
+
         # update individuals in the fitness
         self.fitness = [[0, individual] for individual in self.population]
 
@@ -153,11 +153,11 @@ class GeneticAlgorithm:
 def plot_genotype(genotype):
     """Plot genotype as matrix."""
     plt.figure(figsize=(3,0.5))
-    plt.imshow(np.atleast_2d(np.array(genotype)))
+    plt.imshow(np.atleast_2d(np.array(genotype)), cmap='gray_r')
     plt.xticks([])
     plt.yticks([])
     plt.show()
-                
+
 
 def test_GA():
     ga = GeneticAlgorithm()
