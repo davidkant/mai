@@ -162,6 +162,7 @@ def prediction_animation(model, x_train, y_train, x_test, batch_size=20, frames=
     def update(i, scat):
         if i == 0:
             loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
+            loss = loss[0]
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
             loss = history.history['loss'][0]
@@ -199,6 +200,7 @@ def boundary_animation(model, x_train, y_train, x_test, batch_size=20, frames=50
     def update(i, ax):
         if i == 0:
             loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
+            loss = loss[0]
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
             loss = history.history['loss'][0]
@@ -262,6 +264,7 @@ def prediction_and_boundary_animation(model, x_train, y_train, x_test, batch_siz
     def update(i, scat, ax):
         if i == 0: 
             loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
+            loss = loss[0]
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
             loss = history.history['loss'][0]
