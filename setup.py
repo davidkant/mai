@@ -13,7 +13,7 @@ requirements = [
     'pyFluidSynth >= 1.2.5',
     'librosa',
     'essentia',
-    'keras==2.2.4',
+    'keras',
     'tensorflow',
 ]
 
