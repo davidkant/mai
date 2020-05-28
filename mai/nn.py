@@ -161,14 +161,13 @@ def prediction_animation(model, x_train, y_train, x_test, batch_size=20, frames=
     # update function
     def update(i, scat):
         if i == 0:
-            loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
-            loss = loss[0]
+            loss, acc = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
-            loss = history.history['loss'][0]
+            acc = history.history['accuracy'][0]
         y_test = model.predict(x_test, batch_size=len(x_test))
         scat.set_color(plt.cm.viridis(y_test.argmax(axis=1).astype(float)))
-        ax.set_title('Epoch {0}, Loss {1:.2f}'.format(i*epochs_per_frame, loss))
+        ax.set_title('Epoch {0}, Accuracy {1:.2f}'.format(i*epochs_per_frame, acc))
         return scat,
 
     # animation
@@ -199,17 +198,16 @@ def boundary_animation(model, x_train, y_train, x_test, batch_size=20, frames=50
     # update function
     def update(i, ax):
         if i == 0:
-            loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
-            loss = loss[0]
+            loss, acc = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
-            loss = history.history['loss'][0]
+            acc = history.history['accuracy'][0]
         x,y = np.meshgrid(np.linspace(-0.06, 1.06, 100), np.linspace(-0.06, 1.06, 100))
         z = model.predict(np.array([x.flatten(), y.flatten()]).T, batch_size=100*100).argmax(axis=1).reshape((100,100)) 
         ax.clear()
         ax.contour(x, y, z, colors='r', linewidths=1, alpha=0.2)
         ax.scatter(x_train[:,0], x_train[:,1], c=plt.cm.viridis(y_train.argmax(axis=1).astype(float)), alpha=0.5)
-        ax.set_title('Epoch {0}, Loss {1:.2f}'.format(i*epochs_per_frame, loss))
+        ax.set_title('Epoch {0}, Accuracy {1:.2f}'.format(i*epochs_per_frame, acc))
         return ax,
 
     # animation
@@ -244,32 +242,31 @@ def prediction_and_boundary_animation(model, x_train, y_train, x_test, batch_siz
     plt.close()
     
     # update function
-    def update_scatter(i, scat, loss):
+    def update_scatter(i, scat, acc):
         y_test = model.predict(x_test, batch_size=len(x_test))
         scat.set_color(plt.cm.viridis(y_test.argmax(axis=1).astype(float)))
         ax[0].set_title('Predictions')
-        ax[0].set_xlabel('Epoch {0}, Loss {1:.2f}'.format(i, loss))
+        ax[0].set_xlabel('Epoch {0}, Accuracy {1:.2f}'.format(i, acc))
     
     # update function
-    def update_contour(i, ax, loss):
+    def update_contour(i, ax, acc):
         x,y = np.meshgrid(np.linspace(-0.06, 1.06, 100), np.linspace(-0.06, 1.06, 100))
         z = model.predict(np.array([x.flatten(), y.flatten()]).T, batch_size=100*100).argmax(axis=1).reshape((100,100)) 
         ax.clear()
         ax.contour(x, y, z, colors='r', linewidths=1, alpha=0.2)
         ax.scatter(x_train[:,0], x_train[:,1], c=plt.cm.viridis(y_train.argmax(axis=1).astype(float)), alpha=0.5)
         ax.set_title('Decision Boundary')
-        ax.set_xlabel('Epoch {0}, Loss {1:.2f}'.format(i, loss))
+        ax.set_xlabel('Epoch {0}, Accuracy {1:.2f}'.format(i, acc))
     
     # update function
     def update(i, scat, ax):
         if i == 0: 
-            loss = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
-            loss = loss[0]
+            loss, acc = model.evaluate(x_train, y_train, batch_size=batch_size, verbose=0)
         else: 
             history = model.fit(x_train, y_train, epochs=epochs_per_frame, batch_size=batch_size, verbose=0)
-            loss = history.history['loss'][0]
-        update_scatter(i*epochs_per_frame, scat, loss)
-        update_contour(i*epochs_per_frame, ax[1], loss)
+            acc = history.history['accuracy'][0]
+        update_scatter(i*epochs_per_frame, scat, acc)
+        update_contour(i*epochs_per_frame, ax[1], acc)
         return ax,
     
     # animation
