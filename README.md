@@ -13,3 +13,32 @@ The ***Music AI Tutorial*** was developed for the course ***MUSC 80L: Artificial
 ### Thanks!
 This project is in ongoing development, so please check back for updates!
 
+### Local Installation
+
+If you want to use the mai package locally (not in Collab/Jupyter notebook), you can install it with pip:
+
+```bash
+python3 -m pip install git+https://github.com/davidkant/mai
+# or
+git clone https://github.com/davidkant/mai
+python3 -m pip install ./mai
+```
+
+The `tensorflow`/`keras` dependencies could be tricky to install sometimes, [see docs](https://www.tensorflow.org/install/pip) if you're having issues.
+
+Then, you can import it like any other package. Without setting up the proper libraries for audio playback, it might be easiest to save to `MIDI`.
+
+```python
+import mai
+
+midi = mai.make_music_heterophonic(
+    [[35, 35], [35, 38, 38], [42, 42, 42, 42, 42, 42, 42, 42, 49]],
+    durs=[[1.3, 1.3], [0.65, 1.3, 1.3], [0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 1.95]],
+    is_drum=True,
+    format="MIDI"
+)
+
+midi.write("my_music.mid")
+```
+
+Then you can visualize it with an online tool or with a tool like [fluidsynth](https://www.fluidsynth.org/) or [timidity](https://timidity.sourceforge.net/). Note these typically require you to setup a [soundfont](https://en.wikipedia.org/wiki/SoundFont)
