@@ -1,8 +1,17 @@
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
-from keras.optimizers import gradient_descent_v2
 import numpy as np
+
+# handle both cases as described here:
+# https://github.com/davidkant/mai/commit/6b152a43fccf5e01c3dc6e24417607fa254f8bbf
+# https://github.com/tensorflow/tensorflow/issues/23728
+try:
+    from keras.optimizers import SGD
+except: # if cant import, try the other PATH
+    from keras.optimizers import gradient_descent_v2
+
+    SGD = gradient_descent_v2.SGD
 
 # Network Architectures ----------------------------------------------------------------
 
@@ -17,7 +26,7 @@ def singleLayerPerceptron(units=2, input_dim=2, lr=0.03, decay=1e-6, momentum=0.
     
     # compile the model
     model.compile(loss='binary_crossentropy' if units == 2 else 'categorical_crossentropy',
-                  optimizer=gradient_descent_v2.SGD(lr=lr, decay=decay, momentum=momentum, nesterov=nesterov),
+                  optimizer=SGD(lr=lr, decay=decay, momentum=momentum, nesterov=nesterov),
                   metrics=['accuracy'])
     
     return model
@@ -42,7 +51,7 @@ def multiLayerPerceptron(num_neurons=4, num_hidden_layers=1, input_dim=2, output
 
     # compile the model
     model.compile(loss='binary_crossentropy' if output_dim == 2 else 'categorical_crossentropy',
-                  optimizer=gradient_descent_v2.SGD(lr=lr, decay=decay, momentum=momentum, nesterov=nesterov),
+                  optimizer=SGD(lr=lr, decay=decay, momentum=momentum, nesterov=nesterov),
                   metrics=['accuracy'])
 
     return model
